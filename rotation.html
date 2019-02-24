@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<title>three.js css2d - label</title>
+		<style>
+			body {
+				background-color: #000;
+				margin: 0;
+				overflow: hidden;
+			}
+			#info {
+				position: absolute;
+				top: 0px;
+				width: 100%;
+				color: #FFF;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 13px;
+				text-align: center;
+				z-index: 1;
+			}
+
+			.label{
+				color: #FFF;
+				font-family: sans-serif;
+				padding: 2px;
+				background: rgba( 0, 0, 0, .6 );
+			}
+
+			a {
+				color: #000000;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div id="info"><a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - three.js css2d - label</div>
+
+		<script src="three.js-master/build/three.js"></script>
+
+		<script src="three.js-master/examples/js/controls/OrbitControls.js"></script>
+
+		<script src="three.js-master/examples/js/renderers/CSS2DRenderer.js"></script>
+
+		<script>
+
+			var camera, scene, renderer, labelRenderer;
+
+			var clock = new THREE.Clock();
+			var textureLoader = new THREE.TextureLoader();
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
+			camera.position.set( 0, 0, 100 );
+			camera.lookAt( 0, 0, 0 );
+
+			var scene = new THREE.Scene();
+
+			var xmaterial = new THREE.LineBasicMaterial( { color: 0xff0000 } );
+
+			var ymaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } );
+
+			var zmaterial = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+
+			var xhat = new THREE.Geometry();
+			var yhat = new THREE.Geometry();
+			var zhat = new THREE.Geometry();
+			xhat.vertices.push(new THREE.Vector3( 0, 0, 0) );
+			xhat.vertices.push(new THREE.Vector3( 1, 0, 0) );
+			yhat.vertices.push(new THREE.Vector3( 0, 0, 0) );
+			yhat.vertices.push(new THREE.Vector3( 0, 1, 0) );
+			zhat.vertices.push(new THREE.Vector3( 0, 0, 0) );
+			zhat.vertices.push(new THREE.Vector3( 0, 0, 1) );
+			var xline = new THREE.Line( xhat, xmaterial );
+			var yline = new THREE.Line( yhat, ymaterial );
+			var zline = new THREE.Line( zhat, zmaterial );
+
+			scene.add( xline );
+			scene.add( yline );
+			scene.add( zline );
+			renderer.render( scene, camera );
+		</script>
+	</body>
+</html>
