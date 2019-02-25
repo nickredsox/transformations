@@ -47,43 +47,73 @@
 		<script>
 
 			var camera, scene, renderer, labelRenderer;
-
+			
+			//Grid size
+			var size = 10;
+			var divisions = 10;
+			var xline, yline, zline;
+			var xhat, yhat, zhat;
 			var clock = new THREE.Clock();
-			var textureLoader = new THREE.TextureLoader();
+			
+			init();
+			animate();
+			//nick
+			function init() {
+				renderer = new THREE.WebGLRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
 
-			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera.position.set( 10, 5, 20 );
+				camera.lookAt( 0, 0, 0 );
 
-			var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
-			camera.position.set( 0, 0, 100 );
-			camera.lookAt( 0, 0, 0 );
+				var controls = new THREE.OrbitControls( camera );
 
-			var scene = new THREE.Scene();
 
-			var xmaterial = new THREE.LineBasicMaterial( { color: 0xff0000 } );
+				scene = new THREE.Scene();
 
-			var ymaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } );
+				var xmaterial = new THREE.LineBasicMaterial( { color: 0xff0000 } );
 
-			var zmaterial = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+				var ymaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } );
 
-			var xhat = new THREE.Geometry();
-			var yhat = new THREE.Geometry();
-			var zhat = new THREE.Geometry();
-			xhat.vertices.push(new THREE.Vector3( 0, 0, 0) );
-			xhat.vertices.push(new THREE.Vector3( 1, 0, 0) );
-			yhat.vertices.push(new THREE.Vector3( 0, 0, 0) );
-			yhat.vertices.push(new THREE.Vector3( 0, 1, 0) );
-			zhat.vertices.push(new THREE.Vector3( 0, 0, 0) );
-			zhat.vertices.push(new THREE.Vector3( 0, 0, 1) );
-			var xline = new THREE.Line( xhat, xmaterial );
-			var yline = new THREE.Line( yhat, ymaterial );
-			var zline = new THREE.Line( zhat, zmaterial );
+				var zmaterial = new THREE.LineBasicMaterial( { color: 0x0000ff } );
 
-			scene.add( xline );
-			scene.add( yline );
-			scene.add( zline );
-			renderer.render( scene, camera );
+				xhat = new THREE.Geometry();
+				yhat = new THREE.Geometry();
+				zhat = new THREE.Geometry();
+				xhat.vertices.push(new THREE.Vector3( 0, 0, .01) );
+				xhat.vertices.push(new THREE.Vector3( 1, 0, .01) );
+				yhat.vertices.push(new THREE.Vector3( 0, 0, .01) );
+				yhat.vertices.push(new THREE.Vector3( 0, 1, .01) );
+				zhat.vertices.push(new THREE.Vector3( 0, 0, 0) );
+				zhat.vertices.push(new THREE.Vector3( 0, 0, 1) );
+				xline = new THREE.Line( xhat, xmaterial );
+				yline = new THREE.Line( yhat, ymaterial );
+				zline = new THREE.Line( zhat, zmaterial );
+
+				
+
+				var gridHelper = new THREE.GridHelper( size, divisions );
+				scene.add( gridHelper );
+
+				scene.add( xline );
+				scene.add( yline );
+				scene.add( zline );
+
+
+				renderer.render( scene, camera );
+			}
+
+
+			function animate() {
+				console.log(zline.computeLineDistances())
+				requestAnimationFrame( animate );
+				var elapsed = clock.getElapsedTime();
+				renderer.render( scene, camera );
+
+			}
+
+
 		</script>
 	</body>
 </html>
